@@ -1,34 +1,26 @@
-import java.util.Random;
-
 public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println(permission(21, -10));
-        System.out.println(permission(19, 28));
-        System.out.println(permission(46, -10));
-        System.out.println(permission(16, 29));
-        System.out.println(permission(999, -6969));
+        double[] numbers = {3.14, 1.618, -4.2, 0, 2.7, -9.8, 6.6, -3, 7, -1.1, 8.9, -5.5, 10.01, -2.2, 4.444};
 
-        System.out.println(); // небольшой отступ
-        System.out.println(permission(generateRandomAge(), 10));
-        System.out.println(permission(generateRandomAge(), 25));
-
-    }
-
-    public static String permission(int age, float temp) {
-        System.out.println("Возраст: " + age + ", темп: " + temp);
-        if ((age >= 20 && age <= 45) && (temp >= -20 && temp <= 30) ||
-                age < 20 && (temp >= 0 && temp <= 28) ||
-                age > 45 && (temp >= -10 && temp <= 25)) {
-            return "Можно идти гулять";
-        } else {
-            return "Оставайтесь дома";
+        double sum = 0;
+        int counter = 0;
+        boolean afterNegative = false;
+        for (double number : numbers) {
+            if (number < 0) {
+                afterNegative = true;
+                continue;
+            }
+            if (afterNegative) {
+                sum += number;
+                counter ++;
+            }
         }
-    }
 
-    public static int generateRandomAge() {
-        return new Random().nextInt(100);
+        System.out.println("Sum: " + sum + " counter: " + counter);
+        System.out.println(sum / counter);
+
     }
 
 }
