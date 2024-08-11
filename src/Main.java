@@ -9,9 +9,9 @@ public class Main {
     public static int bossHealth = 700;
     public static int bossDamage = 50;
     public static String bossDefence;
-    public static int[] heroesHealth = {290, 270, 250, 350, 635};
-    public static int[] heroesDamage = {20, 15, 10, 0, 5};
-    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic", "Golem"};
+    public static int[] heroesHealth = {290, 270, 250, 350, 635, 280};
+    public static int[] heroesDamage = {20, 15, 10, 0, 5, 10};
+    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic", "Golem", "Lucky"};
     public static int roundNumber = 0;
 
     public static void main(String[] args) {
@@ -60,13 +60,22 @@ public class Main {
 
         for (int i = 0; i < heroesHealth.length; i++) {
             if (heroesHealth[i] > 0) {
+                if (heroesAttackType[i].equals("Lucky")) {
+                    if (new Random().nextBoolean()) {
+                        System.out.println("Lucky has dodged an attack.");
+                        continue;
+                    }
+                }
+
                 int newDmg = bossDamage;
+                // golem' damage absorption
                 if (isGolemAlive) {
                     newDmg = bossDamage - absorbedDamage;
                     heroesHealth[4] -= absorbedDamage;
                     if (heroesHealth[GOLEM_INDEX] < 0) heroesHealth[GOLEM_INDEX] = 0;
                 }
 
+                // deal damage
                 if (heroesHealth[i] - newDmg < 0) {
                     heroesHealth[i] = 0;
                 } else {
