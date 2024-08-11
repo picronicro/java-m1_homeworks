@@ -6,7 +6,7 @@ public class Main {
     public static final int GOLEM_INDEX = 4;
     public static final int WITCHER_INDEX = 6;
 
-    public static int bossHealth = 1000;
+    public static int bossHealth = 1500;
     public static int bossDamage = 50;
     public static String bossDefence;
     public static boolean isStunned = false;
@@ -128,11 +128,7 @@ public class Main {
                     damage = heroesDamage[i] * coefficient;
                     System.out.println("Critical damage: " + damage);
                 }
-                if (bossHealth - damage < 0) {
-                    bossHealth = 0;
-                } else {
-                    bossHealth = bossHealth - damage;
-                }
+                bossHealth = Math.max(bossHealth - damage, 0);
             }
         }
     }
