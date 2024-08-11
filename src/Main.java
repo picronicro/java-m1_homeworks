@@ -3,12 +3,15 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Main {
+
+    public static final int GOLEM_INDEX = 4;
+
     public static int bossHealth = 700;
     public static int bossDamage = 50;
     public static String bossDefence;
-    public static int[] heroesHealth = {290, 270, 250, 350};
-    public static int[] heroesDamage = {20, 15, 10, 0};
-    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic"};
+    public static int[] heroesHealth = {290, 270, 250, 350, 635};
+    public static int[] heroesDamage = {20, 15, 10, 0, 5};
+    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic", "Golem"};
     public static int roundNumber = 0;
 
     public static void main(String[] args) {
@@ -52,12 +55,22 @@ public class Main {
     }
 
     public static void bossAttacks() {
+        int absorbedDamage = (int) (bossDamage * 0.2);
+        boolean isGolemAlive = heroesHealth[GOLEM_INDEX] > 0;
+
         for (int i = 0; i < heroesHealth.length; i++) {
             if (heroesHealth[i] > 0) {
-                if (heroesHealth[i] - bossDamage < 0) {
+                int newDmg = bossDamage;
+                if (isGolemAlive) {
+                    newDmg = bossDamage - absorbedDamage;
+                    heroesHealth[4] -= absorbedDamage;
+                    if (heroesHealth[GOLEM_INDEX] < 0) heroesHealth[GOLEM_INDEX] = 0;
+                }
+
+                if (heroesHealth[i] - newDmg < 0) {
                     heroesHealth[i] = 0;
                 } else {
-                    heroesHealth[i] = heroesHealth[i] - bossDamage;
+                    heroesHealth[i] = heroesHealth[i] - newDmg;
                 }
             }
         }
