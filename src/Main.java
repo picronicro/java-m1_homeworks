@@ -9,9 +9,10 @@ public class Main {
     public static int bossHealth = 1000;
     public static int bossDamage = 50;
     public static String bossDefence;
-    public static int[] heroesHealth = {290, 270, 250, 350, 635, 280, 450};
-    public static int[] heroesDamage = {20, 15, 10, 0, 5, 10, 0};
-    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic", "Golem", "Lucky", "Witcher"};
+    public static boolean isStunned = false;
+    public static int[] heroesHealth = {290, 270, 250, 350, 635, 280, 450, 290};
+    public static int[] heroesDamage = {20, 15, 10, 0, 5, 10, 0, 15};
+    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic", "Golem", "Lucky", "Witcher", "Thor"};
     public static int roundNumber = 0;
 
     public static void main(String[] args) {
@@ -23,8 +24,13 @@ public class Main {
 
     public static void playRound() {
         roundNumber++;
-        chooseBossDefence();
-        bossAttacks();
+        if (!isStunned) {
+            chooseBossDefence();
+            bossAttacks();
+        } else {
+            isStunned = false;
+            System.out.println("The boss is out of stun.");
+        }
         heroesAttack();
         printStatistics();
     }
@@ -80,7 +86,7 @@ public class Main {
                     if (heroesHealth[WITCHER_INDEX] > 0) {
                         heroesHealth[i] = heroesHealth[WITCHER_INDEX];
                         heroesHealth[WITCHER_INDEX] = 0;
-                        System.out.println("Witcher sacrificed his life for " + heroesAttackType[i]);
+                        System.out.println("Witcher sacrificed his life for " + heroesAttackType[i] + ".");
                     } else {
                         heroesHealth[i] = 0;
                     }
@@ -94,6 +100,7 @@ public class Main {
     public static void heroesAttack() {
         for (int i = 0; i < heroesDamage.length; i++) {
             if (heroesHealth[i] > 0 && bossHealth > 0) {
+                // Medic' special
                 if (heroesAttackType[i].equals("Medic")) {
                     for (int j = 0; j < heroesHealth.length; j++) {
                         int hp = heroesHealth[j];
@@ -106,6 +113,13 @@ public class Main {
                     }
                 }
 
+                // Thor' special
+                if (heroesAttackType[i].equals("Thor")) {
+                    isStunned = new Random().nextBoolean();
+                    if (isStunned) {
+                        System.out.println("Thor has stunned the boss for one round.");
+                    }
+                }
 
                 int damage = heroesDamage[i];
                 if (Objects.equals(heroesAttackType[i], bossDefence)) {
@@ -126,7 +140,8 @@ public class Main {
     public static void printStatistics() {
         System.out.println("\nROUND " + roundNumber + " -----------------");
         System.out.println("BOSS health: " + bossHealth + " damage: " + bossDamage
-                + " defence: " + (bossDefence == null ? "No defence" : bossDefence) + "\n");
+                + " weakness: " + (bossDefence == null ? "Nothing" : bossDefence)
+                + (isStunned ? " | STUNNED" : " ") + "\n");
         for (int i = 0; i < heroesHealth.length; i++) {
             System.out.println(heroesAttackType[i] + " health: " + heroesHealth[i]
                     + " damage: " + heroesDamage[i]);
