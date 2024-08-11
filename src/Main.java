@@ -1,26 +1,108 @@
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Random;
+
 public class Main {
+    public static int bossHealth = 700;
+    public static int bossDamage = 50;
+    public static String bossDefence;
+    public static int[] heroesHealth = {290, 270, 250, 350};
+    public static int[] heroesDamage = {20, 15, 10, 0};
+    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic"};
+    public static int roundNumber = 0;
 
     public static void main(String[] args) {
-
-        double[] numbers = {3.14, 1.618, -4.2, 0, 2.7, -9.8, 6.6, -3, 7, -1.1, 8.9, -5.5, 10.01, -2.2, 4.444};
-
-        double sum = 0;
-        int counter = 0;
-        boolean afterNegative = false;
-        for (double number : numbers) {
-            if (number < 0) {
-                afterNegative = true;
-                continue;
-            }
-            if (afterNegative) {
-                sum += number;
-                counter ++;
-            }
+        printStatistics();
+        while (!isGameOver()) {
+            playRound();
         }
-
-        System.out.println("Sum: " + sum + " counter: " + counter);
-        System.out.println(sum / counter);
-
     }
 
+    public static void playRound() {
+        roundNumber++;
+        chooseBossDefence();
+        bossAttacks();
+        heroesAttack();
+        printStatistics();
+    }
+
+    public static boolean isGameOver() {
+        if (bossHealth <= 0) {
+            System.out.println("Heroes won!!!");
+            return true;
+        }
+        boolean allHeroesDead = true;
+        for (int i = 0; i < heroesHealth.length; i++) {
+            if (heroesHealth[i] > 0) {
+                allHeroesDead = false;
+                break;
+            }
+        }
+        if (allHeroesDead) {
+            System.out.println("Boss won!!!");
+            return true;
+        }
+        return false;
+    }
+
+    public static void chooseBossDefence() {
+        Random random = new Random();
+        int randomIndex = random.nextInt(heroesAttackType.length); // 0, 1, 2
+        bossDefence = heroesAttackType[randomIndex];
+    }
+
+    public static void bossAttacks() {
+        for (int i = 0; i < heroesHealth.length; i++) {
+            if (heroesHealth[i] > 0) {
+                if (heroesHealth[i] - bossDamage < 0) {
+                    heroesHealth[i] = 0;
+                } else {
+                    heroesHealth[i] = heroesHealth[i] - bossDamage;
+                }
+            }
+        }
+    }
+
+    public static void heroesAttack() {
+        for (int i = 0; i < heroesDamage.length; i++) {
+            if (heroesHealth[i] > 0 && bossHealth > 0) {
+                if (heroesAttackType[i].equals("Medic")) {
+                    for (int j = 0; j < heroesHealth.length; j++) {
+                        int hp = heroesHealth[j];
+                        if (hp < 100 && !heroesAttackType[j].equals("Medic")) {
+                            int heal = new Random().nextInt(40) + 40;
+                            heroesHealth[j] += heal;
+                            System.out.println(heroesAttackType[j] + " was healed by " + heal + "hp.");
+                            break;
+                        }
+                    }
+                }
+
+
+                int damage = heroesDamage[i];
+                if (Objects.equals(heroesAttackType[i], bossDefence)) {
+                    Random random = new Random();
+                    int coefficient = random.nextInt(9) + 2; // 2,3,4,5,6,7,8,9,10
+                    damage = heroesDamage[i] * coefficient;
+                    System.out.println("Critical damage: " + damage);
+                }
+                if (bossHealth - damage < 0) {
+                    bossHealth = 0;
+                } else {
+                    bossHealth = bossHealth - damage;
+                }
+            }
+        }
+    }
+
+    public static void printStatistics() {
+        System.out.println("\nROUND " + roundNumber + " -----------------");
+        System.out.println("BOSS health: " + bossHealth + " damage: " + bossDamage
+                + " defence: " + (bossDefence == null ? "No defence" : bossDefence) + "\n");
+        for (int i = 0; i < heroesHealth.length; i++) {
+            System.out.println(heroesAttackType[i] + " health: " + heroesHealth[i]
+                    + " damage: " + heroesDamage[i]);
+        }
+        System.out.println();
+    }
 }
