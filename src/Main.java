@@ -66,6 +66,7 @@ public class Main {
 
         for (int i = 0; i < heroesHealth.length; i++) {
             if (heroesHealth[i] > 0) {
+                // Lucky' special
                 if (heroesAttackType[i].equals("Lucky")) {
                     if (new Random().nextBoolean()) {
                         System.out.println("Lucky has dodged an attack.");
@@ -74,7 +75,7 @@ public class Main {
                 }
 
                 int newDmg = bossDamage;
-                // golem' damage absorption
+                // Golem' damage absorption
                 if (isGolemAlive) {
                     newDmg = bossDamage - absorbedDamage;
                     heroesHealth[4] -= absorbedDamage;
