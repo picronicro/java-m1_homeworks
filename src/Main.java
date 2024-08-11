@@ -1,17 +1,17 @@
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
 public class Main {
 
     public static final int GOLEM_INDEX = 4;
+    public static final int WITCHER_INDEX = 6;
 
-    public static int bossHealth = 700;
+    public static int bossHealth = 1000;
     public static int bossDamage = 50;
     public static String bossDefence;
-    public static int[] heroesHealth = {290, 270, 250, 350, 635, 280};
-    public static int[] heroesDamage = {20, 15, 10, 0, 5, 10};
-    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic", "Golem", "Lucky"};
+    public static int[] heroesHealth = {290, 270, 250, 350, 635, 280, 450};
+    public static int[] heroesDamage = {20, 15, 10, 0, 5, 10, 0};
+    public static String[] heroesAttackType = {"Physical", "Magical", "Kinetic", "Medic", "Golem", "Lucky", "Witcher"};
     public static int roundNumber = 0;
 
     public static void main(String[] args) {
@@ -77,7 +77,13 @@ public class Main {
 
                 // deal damage
                 if (heroesHealth[i] - newDmg < 0) {
-                    heroesHealth[i] = 0;
+                    if (heroesHealth[WITCHER_INDEX] > 0) {
+                        heroesHealth[i] = heroesHealth[WITCHER_INDEX];
+                        heroesHealth[WITCHER_INDEX] = 0;
+                        System.out.println("Witcher sacrificed his life for " + heroesAttackType[i]);
+                    } else {
+                        heroesHealth[i] = 0;
+                    }
                 } else {
                     heroesHealth[i] = heroesHealth[i] - newDmg;
                 }
