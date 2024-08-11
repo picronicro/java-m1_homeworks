@@ -62,7 +62,6 @@ public class Main {
 
     public static void bossAttacks() {
         int absorbedDamage = (int) (bossDamage * 0.2);
-        boolean isGolemAlive = heroesHealth[GOLEM_INDEX] > 0;
 
         for (int i = 0; i < heroesHealth.length; i++) {
             if (heroesHealth[i] > 0) {
@@ -76,10 +75,9 @@ public class Main {
 
                 int newDmg = bossDamage;
                 // Golem' damage absorption
-                if (isGolemAlive) {
+                if (heroesHealth[GOLEM_INDEX] > 0) {
                     newDmg = bossDamage - absorbedDamage;
-                    heroesHealth[4] -= absorbedDamage;
-                    if (heroesHealth[GOLEM_INDEX] < 0) heroesHealth[GOLEM_INDEX] = 0;
+                    heroesHealth[GOLEM_INDEX] -= absorbedDamage;
                 }
 
                 // deal damage
