@@ -1,8 +1,8 @@
-public class GameEntity {
+public abstract class Hero implements HavingSuperAbility {
 
     private int health;
-    private int defense;
     private int damage;
+    private String superAbility;
 
     public int getHealth() {
         return health;
@@ -12,20 +12,20 @@ public class GameEntity {
         this.health = health;
     }
 
-    public int getDefense() {
-        return defense;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
-    }
-
     public int getDamage() {
         return damage;
     }
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public String getSuperAbility() {
+        return superAbility;
+    }
+
+    public void setSuperAbility(String superAbility) {
+        this.superAbility = superAbility;
     }
 
 }

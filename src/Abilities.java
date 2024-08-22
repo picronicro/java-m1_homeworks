@@ -1,0 +1,10 @@
+public enum Abilities {
+
+    MEGA_POTION,
+    EXTRA_LIFE,
+    WHIP_TECHNIQUE,
+    PERFECT_SLICE,
+    FACTORIZE,
+    MULTISPELL_CAST
+
+}

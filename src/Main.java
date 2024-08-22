@@ -1,41 +1,25 @@
+import java.util.Random;
+
 public class Main {
 
     public static void main(String[] args) {
-        Weapon claws = new Weapon();
-        claws.setType(WeaponType.MELEE);
-        claws.setName("Mighty Claws");
+        Abilities[] abilities = Abilities.values();
+        Hero[] heroes = {new Magic(), new Medic(), new Warrior()};
 
-        Boss boss = new Boss();
-        boss.setHealth(1200);
-        boss.setDefense(250);
-        boss.setDamage(80);
-        boss.setWeapon(claws);
-        boss.printInfo();
+        for (Hero hero : heroes) {
+            Random r = new Random();
+            hero.setHealth(r.nextInt(200) + 50);
+            hero.setDamage(r.nextInt(50) + 20);
+            hero.setSuperAbility(abilities[r.nextInt(0, abilities.length)].toString());
+            hero.applySuperAbility();
 
-        Weapon bowgun = new Weapon();
-        bowgun.setType(WeaponType.RANGED);
-        bowgun.setName("Heavy Bowgun");
-
-        Skeleton kostyanka = new Skeleton();
-        kostyanka.setHealth(600);
-        kostyanka.setDefense(80);
-        kostyanka.setDamage(20);
-        kostyanka.setWeapon(bowgun);
-        kostyanka.setArrowsAmount(80);
-        kostyanka.printInfo();
-
-        Weapon bimba = new Weapon();
-        bimba.setType(WeaponType.EXPLOSIVE);
-        bimba.setName("Pocket Bimba");
-
-        Skeleton bones = new Skeleton();
-        bones.setHealth(450);
-        bones.setDefense(40);
-        bones.setDamage(60);
-        bones.setWeapon(bimba);
-        bones.setArrowsAmount(25);
-        bones.printInfo();
-
+            if (hero instanceof Medic) {
+                Medic medic = (Medic) hero;
+                System.out.println("Medic' heal points before: " + medic.getHealPoints());
+                medic.increaseExperience();
+                System.out.println("Medic' heal points after: " + medic.getHealPoints());
+            }
+        }
     }
 
 }
